@@ -1,0 +1,47 @@
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <h2 class="text-secondary">Estoque & Catálogo</h2>
+        <p class="text-muted">Gerencie os produtos que entrarão no PDF.</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="/catalogo-digital" target="_blank" class="btn btn-primary btn-lg shadow-sm">
+            📄 Visualizar PDF para Impressão
+        </a>
+    </div>
+</div>
+
+<hr class="mb-4">
+
+<div class="row">
+    {{#each listaProdutos}}
+    <div class="col-md-4 mb-4"> <div class="card h-100 shadow-sm">
+            <div class="card-header bg-transparent border-success">
+                <span class="badge bg-success float-end">{{this.categoria}}</span>
+                <h5 class="card-title text-success mb-0">{{this.nome}}</h5>
+            </div>
+            
+            <div class="card-body">
+                <h6 class="text-muted mb-2">Embalagem: {{this.peso}}</h6>
+                
+                <h4 class="text-dark">R$ {{this.preco}}</h4>
+                
+                <p class="card-text small text-secondary mt-3">
+                    {{this.descricao_curta}}
+                </p>
+            </div>
+            
+            <div class="card-footer bg-transparent">
+                <a href="/produto/{{this.id}}" class="btn btn-outline-success w-100 fw-bold">Ver Detalhes 🔍</a>
+
+                <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza que deseja apagar este item?')" class="btn btn-danger w-100 fw-bold">Excluir 🗑️</a>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="col-12 text-center mt-5">
+        <div class="alert alert-warning">
+            Nenhum produto cadastrado ainda. <a href="/admin/cadastrar">Cadastre o primeiro!</a>
+        </div>
+    </div>
+    {{/each}}
+</div>

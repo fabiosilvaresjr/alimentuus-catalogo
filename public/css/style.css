@@ -1,0 +1,27 @@
+body {
+    background-color: #f0f2f1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border: none; /* Tira a borda preta feia */
+    border-radius: 12px; /* Arredonda os cantos */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Prepara a animação */
+}
+
+/* Efeito Hover */
+.card:hover {
+    transform: translateY(-5px); /* O cartão sobe 5 pixels */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important; /* A sombra aumenta */
+    border-bottom: 4px solid #198754; /* Uma listra verde aparece embaixo */
+}
+
+.card-title {
+    color: #1a4d2e;
+    font-weight: 700;
+}
+
+.badge {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

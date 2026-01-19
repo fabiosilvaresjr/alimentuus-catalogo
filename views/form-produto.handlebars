@@ -1,0 +1,60 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Cadastrar Produto Alimentuus</h4>
+                </div>
+                
+                <div class="card-body">
+                    <form action="/produtos/novo" method="POST">
+    
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nome do Produto</label>
+                                <input type="text" class="form-control" name="nome" placeholder="Ex: Alimentuus Creep" required>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label">Categoria</label>
+                                <select class="form-select" name="categoria">
+                                    <option value="Racao">Ração / Creep</option>
+                                    <option value="Mineral">Mineral</option>
+                                    <option value="Proteinado">Proteinado</option>
+                                    <option value="Nucleo">Núcleo</option>
+                                    <option value="Equinos">Equinos</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label">Quantidade (unidade)</label>
+                                <input type="text" class="form-control" name="peso" placeholder="Ex: 30 kg, 1 L, 500 ml">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Preço Sugerido (R$)</label>
+                            <input type="number" class="form-control" name="preco" step="0.01" placeholder="0.00">
+                        </div>
+
+                        <div class="mb-3 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold text-success">📢 Descrição Curta (Marketing)</label>
+                            <div class="form-text">Texto vendedor para o Catálogo e Home.</div>
+                            <textarea class="form-control" name="descricao_curta" rows="3" placeholder="Ex: Indicado para desmame precoce com ganho de peso..."></textarea>
+                        </div>
+
+                        <div class="mb-3 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold text-dark">🔬 Ficha Técnica (Nutricional)</label>
+                            <div class="form-text">Cole a tabela técnica do PDF aqui (Só aparece no botão Detalhes).</div>
+                            <textarea class="form-control font-monospace" name="ficha_tecnica" rows="6" placeholder="Cálcio: 50g..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Salvar Produto</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

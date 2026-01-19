@@ -1,0 +1,33 @@
+{
+  "name": "alimentuus-catalogo",
+  "version": "1.0.0",
+  "description": "Aplicação Node.js com Handlebars para gerenciamento e geração de catálogos de produtos em PDF, feito para automatizar demanda da empresa.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabiosilvaresjr/alimentuus-catalogo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/fabiosilvaresjr/alimentuus-catalogo/issues"
+  },
+  "homepage": "https://github.com/fabiosilvaresjr/alimentuus-catalogo#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.4",
+    "multer": "^2.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.16.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
