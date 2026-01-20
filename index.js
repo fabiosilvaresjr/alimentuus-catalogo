@@ -28,17 +28,30 @@ connection.connect((err) => {
     console.log('Conectado no MySQL com sucesso!')
 })
 
-// Rota da Página Inicial (Lendo do Banco de Dados)
+// Rota da Home (COM SISTEMA DE BUSCA/FILTRO)
 app.get('/', (req, res) => {
-    const sql = 'SELECT * FROM produtos'
+    const pesquisa = req.query.busca
+    
+    let sql = ''
+    let valores = []
 
-    connection.query(sql, (err, results) => {
+    if (pesquisa) {
+        sql = `SELECT * FROM produtos WHERE nome LIKE ? OR categoria LIKE ?`
+        valores = [`%${pesquisa}%`, `%${pesquisa}%`]
+    } else {
+        sql = 'SELECT * FROM produtos'
+    }
+
+    connection.query(sql, valores, (err, results) => {
         if (err) {
             console.log(err)
             return res.send('Erro ao buscar produtos!')
         }
-        // 'results' é a lista que veio do banco (igual ao antigo array)
-        res.render('home', { listaProdutos: results })
+        
+        res.render('home', { 
+            listaProdutos: results,
+            termoBusca: pesquisa 
+        })
     })
 })
 
@@ -85,16 +98,28 @@ app.get('/produto/:id', (req, res) => {
     })
 })
 
-// Visual do Catálogo (BUSCANDO TUDO NO BANCO)
+// Catálogo para Impressão com filtro
 app.get('/catalogo-digital', (req, res) => {
-    const sql = 'SELECT * FROM produtos'
+    const pesquisa = req.query.busca
+    
+    let sql = ''
+    let valores = []
 
-    connection.query(sql, (err, results) => {
-        if (err) return res.send('Erro ao gerar catálogo')
+    if (pesquisa) {
+        sql = `SELECT * FROM produtos WHERE nome LIKE ? OR categoria LIKE ?`
+        valores = [`%${pesquisa}%`, `%${pesquisa}%`]
+    } else {
+        sql = 'SELECT * FROM produtos'
+    }
+
+    connection.query(sql, valores, (err, results) => {
+        if (err) {
+            return res.send('Erro ao gerar catálogo')
+        }
         
         res.render('catalogo-print', { 
             layout: false,
-            produtos: results 
+            produtos: results
         })
     })
 })
@@ -113,6 +138,52 @@ app.get('/produtos/deletar/:id', (req, res) => {
         
         console.log('Produto deletado com sucesso!')
         res.redirect('/') // Volta para a home atualizada
+    })
+})
+
+
+// formulário de edição 
+app.get('/admin/editar/:id', (req, res) => {
+    const id = req.params.id
+    
+    // Busca o produto no banco para preencher os campos
+    const sql = 'SELECT * FROM produtos WHERE id = ?'
+
+    connection.query(sql, [id], (err, results) => {
+        if (err) return res.send("Erro ao buscar produto")
+        
+        const produto = results[0] // Pega o primeiro (e único) item
+        
+        // Renderiza a página 'editar.handlebars' enviando os dados do produto
+        res.render('editar', { produto: produto })
+    })
+})
+
+// UPDATE
+app.post('/produtos/atualizar', (req, res) => {
+    // Recebe o ID e os dados novos do formulário
+    const { id, nome, categoria, peso, preco, descricao_curta, ficha_tecnica } = req.body
+
+    // O comando SQL que atualiza os campos
+    const sql = `UPDATE produtos SET 
+                 nome = ?, 
+                 categoria = ?, 
+                 peso = ?, 
+                 preco = ?, 
+                 descricao_curta = ?, 
+                 ficha_tecnica = ? 
+                 WHERE id = ?`
+
+    const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica, id]
+
+    connection.query(sql, valores, (err) => {
+        if (err) {
+            console.log(err)
+            return res.send("Erro ao atualizar produto!")
+        }
+        
+        console.log('Produto atualizado com sucesso!')
+        res.redirect('/') // Volta pra home
     })
 })
 

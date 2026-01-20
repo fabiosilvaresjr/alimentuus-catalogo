@@ -1,45 +1,87 @@
-# Alimentuus - Gerenciador de Catálogo Digital
+# Alimentuus - Sistema de Gestão de Catálogos
 
-> **Status:** Frontend e Gerador de PDF Prontos | Próximo Passo: Banco de Dados MySQL
+> **Status:** Backend Integrado (MySQL) | Próximo Passo: Upload de Imagens
 
 ## Sobre o Projeto
-Sistema desenvolvido para a **Alimentuus** (Nutrição Animal) para unificar fichas técnicas e gerar catálogos comerciais em PDF automaticamente.
+Sistema desenvolvido para a **Alimentuus** (Nutrição Animal) para gerenciar o portfólio de produtos e automatizar a criação de catálogos comerciais.
 
-O sistema resolve o problema de **descrições técnicas complexas** separando o conteúdo em:
+O projeto evoluiu de uma aplicação estática para um sistema **FullStack**, onde os dados são persistidos de forma segura em banco de dados relacional, garantindo integridade e gestão eficiente do estoque.
+
+O sistema resolve o conflito entre dados técnicos e comerciais:
 1.  **Visão Comercial:** Texto curto e vendedor para o catálogo impresso.
-2.  **Visão Técnica:** Tabelas nutricionais detalhadas acessíveis via QR Code/Link.
+2.  **Visão Técnica:** Tabelas nutricionais detalhadas e fichas técnicas completas.
 
 ## Tecnologias
 
-* **Node.js & Express:** Servidor Web.
-* **Handlebars:** Renderização de páginas (SSR).
-* **Bootstrap 5:** Interface responsiva e moderna.
-* **CSS Print:** Estilização específica para geração de PDF limpo (vetorial).
+* **Node.js & Express:** Backend e API.
+* **MySQL:** Banco de dados relacional para persistência dos produtos.
+* **Handlebars:** Renderização de páginas dinâmicas (Server Side Rendering).
+* **Bootstrap 5:** Interface responsiva.
+* **Dotenv:** Segurança e gestão de variáveis de ambiente.
 
-## Funcionalidades Entregues
+## Funcionalidades
 
+- [x] **Persistência de Dados:** Conexão robusta com MySQL (CRUD).
 - [x] **Cadastro Inteligente:** Formulário com separação de dados (Marketing vs Técnico).
-- [x] **Catálogo Digital:** Visualização em Grid (3 colunas) otimizada para impressão.
-- [x] **Ficha Técnica:** Página de detalhes com formatação automática de tabelas copiadas de PDF.
-- [x] **UX/UI:** Botões de ação rápida, feedbacks visuais e design "Clean" para o setor Agro.
-- [ ] **Banco de Dados:** Integração com MySQL (Em breve).
-- [ ] **Upload de Imagens:** Gerenciamento de fotos reais (Em breve).
+- [x] **Gestão de Produtos:** Listagem dinâmica e função de **Excluir** itens do banco.
+- [x] **Catálogo Digital:** Geração automática de layout otimizado para impressão (Grid 3 colunas).
+- [x] **Segurança:** Credenciais protegidas via variáveis de ambiente (.env).
+- [ ] **Upload de Imagens:** Gerenciamento de fotos reais (Em Breve).
+- [ ] **Filtros Avançados:** Categorização por linha de produto (Em Breve).
 
 ## Como rodar o projeto
 
-1.  Clone o repositório:
+### Pré-requisitos
+* Node.js instalado.
+* MySQL Server rodando.
+
+### Passo a Passo
+
+1.  **Clone o repositório:**
+    ```bash
     git clone [https://github.com/SEU-USUARIO/alimentuus-catalogo.git](https://github.com/SEU-USUARIO/alimentuus-catalogo.git)
-    
-2.  Instale as dependências:
+    cd alimentuus-catalogo
+    ```
+
+2.  **Instale as dependências:**
+    ```bash
     npm install
-    
-3.  Inicie o servidor:
+    ```
+
+3.  **Configure o Banco de Dados:**
+    * Crie um banco de dados MySQL chamado `alimentuus`.
+    * Crie a tabela `produtos` (Use o script SQL abaixo no seu cliente MySQL/DBeaver):
+    ```sql
+    CREATE TABLE produtos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        categoria VARCHAR(50),
+        peso VARCHAR(50),
+        preco DECIMAL(10, 2),
+        descricao_curta TEXT,
+        ficha_tecnica TEXT,
+        imagem VARCHAR(255) DEFAULT 'placeholder.jpg'
+    );
+    ```
+
+4.  **Configure as Variáveis de Ambiente:**
+    * Crie um arquivo chamado `.env` na raiz do projeto.
+    * Adicione suas credenciais do MySQL:
+    ```env
+    DB_HOST=127.0.0.1
+    DB_USER=seu_usuario_mysql
+    DB_PASS=sua_senha_mysql
+    DB_NAME=alimentuus
+    ```
+
+5.  **Inicie o servidor:**
+    ```bash
     npm start
-    
-4.  Acesse:
-    * **Painel:** `http://localhost:3000`
-    * **Visualização PDF:** Clique no botão "Visualizar PDF" na Home.
+    ```
+
+6.  **Acesse:**
+    * Abra `http://localhost:3000` no seu navegador.
 
 ---
-Desenvolvido por **Fabio Almeida** 
+Desenvolvido por **Fabio Almeida**
 *Estudante de Análise e Desenvolvimento de Sistemas | Foco em Backend Node.js*

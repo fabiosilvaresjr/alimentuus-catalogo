@@ -1,10 +1,27 @@
 <div class="row align-items-center mb-4">
     <div class="col-md-8">
         <h2 class="text-secondary">Estoque & Catálogo</h2>
+
+        <div class="card bg-light mb-4 shadow-sm">
+            <div class="card-body">
+                <form action="/" method="GET" class="row g-2">
+                    <div class="col-md-10">
+                        <input type="text" name="busca" class="form-control" placeholder="🔍 O que você procura? (Ex: Ração, Premium, 50kg...)" value="{{termoBusca}}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar</button>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <a href="/" class="text-muted small text-decoration-none">✖ Limpar filtros</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <p class="text-muted">Gerencie os produtos que entrarão no PDF.</p>
     </div>
     <div class="col-md-4 text-end">
-        <a href="/catalogo-digital" target="_blank" class="btn btn-primary btn-lg shadow-sm">
+        <a href="/catalogo-digital?busca={{termoBusca}}" target="_blank" class="btn btn-primary btn-lg shadow-sm">
             📄 Visualizar PDF para Impressão
         </a>
     </div>
@@ -30,10 +47,22 @@
                 </p>
             </div>
             
-            <div class="card-footer bg-transparent">
-                <a href="/produto/{{this.id}}" class="btn btn-outline-success w-100 fw-bold">Ver Detalhes 🔍</a>
+           <div class="card-footer bg-transparent d-flex justify-content-between align-items-center py-3">
+                <div class="btn-group w-100 shadow-sm" role="group">
+        
+                    <a href="/produto/{{this.id}}" class="btn btn-outline-primary" title="Ver Detalhes">
+                        🔎
+                    </a>
 
-                <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza que deseja apagar este item?')" class="btn btn-danger w-100 fw-bold">Excluir 🗑️</a>
+                    <a href="/admin/editar/{{this.id}}" class="btn btn-outline-warning text-dark" title="Editar">
+                        ✏️
+                    </a>
+                    
+                    <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza?')" class="btn btn-outline-danger" title="Excluir">
+                        🗑️
+                    </a>
+
+                </div>
             </div>
         </div>
     </div>
