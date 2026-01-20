@@ -1,87 +1,57 @@
 # Alimentuus - Sistema de Gestão de Catálogos
 
-> **Status:** Backend Integrado (MySQL) | Próximo Passo: Upload de Imagens
+> **Status:** Filtros de Busca Implementados | Próximo Passo: Upload de Imagens
 
 ## Sobre o Projeto
-Sistema desenvolvido para a **Alimentuus** (Nutrição Animal) para gerenciar o portfólio de produtos e automatizar a criação de catálogos comerciais.
+Sistema FullStack desenvolvido para a **Alimentuus** (Nutrição Animal) para gerenciar o portfólio de produtos e automatizar a criação de catálogos comerciais personalizados.
 
-O projeto evoluiu de uma aplicação estática para um sistema **FullStack**, onde os dados são persistidos de forma segura em banco de dados relacional, garantindo integridade e gestão eficiente do estoque.
-
-O sistema resolve o conflito entre dados técnicos e comerciais:
-1.  **Visão Comercial:** Texto curto e vendedor para o catálogo impresso.
-2.  **Visão Técnica:** Tabelas nutricionais detalhadas e fichas técnicas completas.
+O diferencial do sistema é a capacidade de gerar PDFs "on-demand" baseados na busca do usuário: se o vendedor filtra por "Equinos", o PDF gerado conterá apenas produtos dessa linha.
 
 ## Tecnologias
 
 * **Node.js & Express:** Backend e API.
-* **MySQL:** Banco de dados relacional para persistência dos produtos.
-* **Handlebars:** Renderização de páginas dinâmicas (Server Side Rendering).
-* **Bootstrap 5:** Interface responsiva.
-* **Dotenv:** Segurança e gestão de variáveis de ambiente.
+* **MySQL:** Banco de dados relacional (Persistência completa).
+* **Handlebars:** Renderização com lógica de visualização (Server Side Rendering).
+* **Bootstrap 5:** Interface administrativa responsiva e limpa.
+* **CSS Print:** Motor de estilização vetorial para geração de PDFs.
 
-## Funcionalidades
+## Funcionalidades Entregues
 
-- [x] **Persistência de Dados:** Conexão robusta com MySQL (CRUD).
-- [x] **Cadastro Inteligente:** Formulário com separação de dados (Marketing vs Técnico).
-- [x] **Gestão de Produtos:** Listagem dinâmica e função de **Excluir** itens do banco.
-- [x] **Catálogo Digital:** Geração automática de layout otimizado para impressão (Grid 3 colunas).
-- [x] **Segurança:** Credenciais protegidas via variáveis de ambiente (.env).
-- [ ] **Upload de Imagens:** Gerenciamento de fotos reais (Em Breve).
-- [ ] **Filtros Avançados:** Categorização por linha de produto (Em Breve).
+- [x] **CRUD Completo:** Criar, Ler, Atualizar e Excluir produtos do banco MySQL.
+- [x] **Busca & Filtros:** Barra de pesquisa que filtra produtos por Nome ou Categoria (SQL `LIKE`).
+- [x] **PDF Inteligente:** O botão de impressão respeita o filtro ativo na tela (WYSIWYG).
+- [x] **UI Profissional:** Botões de ação (Detalhes, Editar, Excluir) otimizados e intuitivos.
+- [x] **Segurança:** Variáveis de ambiente (.env) configuradas.
+
+## Próximos Passos (Roadmap)
+
+1.  **Upload de Imagens:** Implementar `Multer` para substituir os placeholders por fotos reais.
+2.  **Identidade Visual:** Aplicar logo, paleta de cores e tipografia oficial da Alimentuus.
+3.  **Deploy:** Subir a aplicação em ambiente de produção (Railway/Render).
 
 ## Como rodar o projeto
 
-### Pré-requisitos
-* Node.js instalado.
-* MySQL Server rodando.
-
-### Passo a Passo
-
-1.  **Clone o repositório:**
+1.  **Clone e Instale:**
     ```bash
-    git clone [https://github.com/SEU-USUARIO/alimentuus-catalogo.git](https://github.com/SEU-USUARIO/alimentuus-catalogo.git)
-    cd alimentuus-catalogo
-    ```
-
-2.  **Instale as dependências:**
-    ```bash
+    git clone [https://github.com/fabiosilvaresjr/alimentuus-catalogo.git](https://github.com/fabiosilvaresjr/alimentuus-catalogo.git)
     npm install
     ```
 
-3.  **Configure o Banco de Dados:**
-    * Crie um banco de dados MySQL chamado `alimentuus`.
-    * Crie a tabela `produtos` (Use o script SQL abaixo no seu cliente MySQL/DBeaver):
-    ```sql
-    CREATE TABLE produtos (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        nome VARCHAR(255) NOT NULL,
-        categoria VARCHAR(50),
-        peso VARCHAR(50),
-        preco DECIMAL(10, 2),
-        descricao_curta TEXT,
-        ficha_tecnica TEXT,
-        imagem VARCHAR(255) DEFAULT 'placeholder.jpg'
-    );
-    ```
-
-4.  **Configure as Variáveis de Ambiente:**
-    * Crie um arquivo chamado `.env` na raiz do projeto.
-    * Adicione suas credenciais do MySQL:
+2.  **Configure o MySQL (.env):**
     ```env
     DB_HOST=127.0.0.1
-    DB_USER=seu_usuario_mysql
-    DB_PASS=sua_senha_mysql
+    DB_USER=root
+    DB_PASS=sua_senha
     DB_NAME=alimentuus
     ```
 
-5.  **Inicie o servidor:**
+3.  **Rode o servidor:**
     ```bash
     npm start
     ```
-
-6.  **Acesse:**
-    * Abra `http://localhost:3000` no seu navegador.
+    Acesse: `http://localhost:3000`
 
 ---
 Desenvolvido por **Fabio Almeida**
 *Estudante de Análise e Desenvolvimento de Sistemas | Foco em Backend Node.js*
+[LinkedIn](https://www.linkedin.com/in/fabio-silvaresjunior)
