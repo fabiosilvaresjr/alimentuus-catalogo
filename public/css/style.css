@@ -1,27 +1,39 @@
-body {
-    background-color: #f0f2f1;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Cor Oficial da Alimentuus */
+:root {
+    --verde-alimentuus: #006837; 
+    --verde-claro: #8CC63F;      
 }
 
-.card {
-    border: none; /* Tira a borda preta feia */
-    border-radius: 12px; /* Arredonda os cantos */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Prepara a animação */
+/* Cabeçalho */
+.navbar {
+    background-color: var(--verde-alimentuus) !important;
+    border-bottom: 4px solid var(--verde-claro);
 }
 
-/* Efeito Hover */
-.card:hover {
-    transform: translateY(-5px); /* O cartão sobe 5 pixels */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important; /* A sombra aumenta */
-    border-bottom: 4px solid #198754; /* Uma listra verde aparece embaixo */
-}
-
-.card-title {
-    color: #1a4d2e;
-    font-weight: 700;
-}
-
-.badge {
+.navbar-brand {
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+
+.btn-primary {
+    background-color: var(--verde-alimentuus);
+    border-color: var(--verde-alimentuus);
+}
+
+.btn-primary:hover {
+    background-color: #004d29; 
+}
+
+/* Cards */
+.card-header {
+    background-color: var(--verde-alimentuus) !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+/* Tabelas Zebradas */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
 }

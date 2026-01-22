@@ -8,8 +8,14 @@
                 </div>
                 
                 <div class="card-body">
-                    <form action="/produtos/novo" method="POST">
-    
+                    <form action="/produtos/novo" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="mb-3 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold">📸 Foto do Produto</label>
+                            <input type="file" name="imagem" class="form-control" accept="image/*" required>
+                            <div class="form-text">Formatos aceitos: JPG, PNG.</div>
+                        </div>
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nome do Produto</label>
@@ -28,8 +34,8 @@
                             </div>
                             
                             <div class="col-md-3">
-                                <label class="form-label">Quantidade (unidade)</label>
-                                <input type="text" class="form-control" name="peso" placeholder="Ex: 30 kg, 1 L, 500 ml">
+                                <label class="form-label">Quantidade</label>
+                                <input type="text" class="form-control" name="peso" placeholder="Ex: 30 kg">
                             </div>
                         </div>
 
@@ -40,14 +46,12 @@
 
                         <div class="mb-3 bg-light p-3 rounded border">
                             <label class="form-label fw-bold text-success">📢 Descrição Curta (Marketing)</label>
-                            <div class="form-text">Texto vendedor para o Catálogo e Home.</div>
-                            <textarea class="form-control" name="descricao_curta" rows="3" placeholder="Ex: Indicado para desmame precoce com ganho de peso..."></textarea>
+                            <textarea class="form-control" name="descricao_curta" rows="3"></textarea>
                         </div>
 
                         <div class="mb-3 bg-light p-3 rounded border">
                             <label class="form-label fw-bold text-dark">🔬 Ficha Técnica (Nutricional)</label>
-                            <div class="form-text">Cole a tabela técnica do PDF aqui (Só aparece no botão Detalhes).</div>
-                            <textarea class="form-control font-monospace" name="ficha_tecnica" rows="6" placeholder="Cálcio: 50g..."></textarea>
+                            <textarea class="form-control font-monospace" name="ficha_tecnica" rows="6"></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-success w-100">Salvar Produto</button>

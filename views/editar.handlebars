@@ -3,9 +3,21 @@
         <h4 class="mb-0">✏️ Editar Produto</h4>
     </div>
     <div class="card-body">
-        <form action="/produtos/atualizar" method="POST">
+        <form action="/produtos/atualizar" method="POST" enctype="multipart/form-data">
             
             <input type="hidden" name="id" value="{{produto.id}}">
+
+            <div class="mb-3 bg-light p-3 rounded border">
+                <label class="form-label fw-bold">📸 Alterar Foto (Opcional)</label>
+                
+                <div class="mb-2">
+                    <span class="text-muted small">Atual:</span>
+                    <img src="/uploads/{{produto.imagem}}" height="50" class="rounded border ms-2">
+                </div>
+
+                <input type="file" name="imagem" class="form-control" accept="image/*">
+                <div class="form-text">Deixe em branco para manter a foto atual.</div>
+            </div>
 
             <div class="mb-3">
                 <label>Nome do Produto:</label>

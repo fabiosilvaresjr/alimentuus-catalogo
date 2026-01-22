@@ -3,6 +3,21 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const app = express()
 const mysql = require('mysql2')
+const multer = require('multer')
+const path = require('path')
+
+// nome do arquivo
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        // Data + Nome Original 
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage: storage })
 
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -59,19 +74,22 @@ app.get('/admin/cadastrar', (req, res) => {
     res.render('form-produto')
 })
 
-// Rota para Cadastrar (Salvando no Banco de Dados)
-app.post('/produtos/novo', (req, res) => {
+// Rota para Cadastrar 
+app.post('/produtos/novo', upload.single('imagem'), (req, res) => {
     const { nome, categoria, peso, preco, descricao_curta, ficha_tecnica } = req.body
+    
+    const imagem = req.file ? req.file.filename : 'placeholder.jpg'
 
-    const sql = `INSERT INTO produtos (nome, categoria, peso, preco, descricao_curta, ficha_tecnica) VALUES (?, ?, ?, ?, ?, ?)`
-    const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica]
+    const sql = `INSERT INTO produtos (nome, categoria, peso, preco, descricao_curta, ficha_tecnica, imagem) VALUES (?, ?, ?, ?, ?, ?, ?)`
+    
+    const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica, imagem]
 
     connection.query(sql, valores, (err) => {
         if (err) {
             console.log(err)
             return res.send('Erro ao cadastrar produto!')
         }
-        console.log('Produto salvo no Banco!')
+        console.log('Produto salvo no Banco com imagem: ' + imagem)
         res.redirect('/')
     })
 })
@@ -160,31 +178,46 @@ app.get('/admin/editar/:id', (req, res) => {
 })
 
 // UPDATE
-app.post('/produtos/atualizar', (req, res) => {
-    // Recebe o ID e os dados novos do formulário
+app.post('/produtos/atualizar', upload.single('imagem'), (req, res) => {
     const { id, nome, categoria, peso, preco, descricao_curta, ficha_tecnica } = req.body
-
-    // O comando SQL que atualiza os campos
-    const sql = `UPDATE produtos SET 
-                 nome = ?, 
-                 categoria = ?, 
-                 peso = ?, 
-                 preco = ?, 
-                 descricao_curta = ?, 
-                 ficha_tecnica = ? 
-                 WHERE id = ?`
-
-    const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica, id]
-
-    connection.query(sql, valores, (err) => {
-        if (err) {
-            console.log(err)
-            return res.send("Erro ao atualizar produto!")
-        }
+    
+    // foto nova
+    if (req.file) {
+        const novaImagem = req.file.filename
         
-        console.log('Produto atualizado com sucesso!')
-        res.redirect('/') // Volta pra home
-    })
+        const sql = `UPDATE produtos SET 
+                     nome = ?, categoria = ?, peso = ?, preco = ?, 
+                     descricao_curta = ?, ficha_tecnica = ?, imagem = ? 
+                     WHERE id = ?`
+        
+        const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica, novaImagem, id]
+
+        connection.query(sql, valores, (err) => {
+            if (err) {
+                console.log(err)
+                return res.send("Erro ao atualizar com foto!")
+            }
+            res.redirect('/')
+        })
+
+    } else {
+        // antiga
+        // Note que removemos 'imagem = ?' do SQL
+        const sql = `UPDATE produtos SET 
+                     nome = ?, categoria = ?, peso = ?, preco = ?, 
+                     descricao_curta = ?, ficha_tecnica = ? 
+                     WHERE id = ?`
+        
+        const valores = [nome, categoria, peso, preco, descricao_curta, ficha_tecnica, id]
+
+        connection.query(sql, valores, (err) => {
+            if (err) {
+                console.log(err)
+                return res.send("Erro ao atualizar sem foto!")
+            }
+            res.redirect('/')
+        })
+    }
 })
 
 app.listen(3000, () => {
