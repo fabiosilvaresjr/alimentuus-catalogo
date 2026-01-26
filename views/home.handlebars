@@ -9,7 +9,7 @@
                         <input type="text" name="busca" class="form-control" placeholder="🔍 O que você procura? (Ex: Ração, Premium, 50kg...)" value="{{termoBusca}}">
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar</button>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">Filtrar</button>
                     </div>
                     <div class="col-12 mt-2">
                         <a href="/" class="text-muted small text-decoration-none">✖ Limpar filtros</a>
@@ -21,7 +21,7 @@
         <p class="text-muted">Gerencie os produtos que entrarão no PDF.</p>
     </div>
     <div class="col-md-4 text-end">
-        <a href="/catalogo-digital?busca={{termoBusca}}" target="_blank" class="btn btn-primary btn-lg shadow-sm">
+        <a href="/catalogo-digital?busca={{termoBusca}}" target="_blank" class="btn btn-success btn-lg shadow-sm">
             📄 Visualizar PDF para Impressão
         </a>
     </div>
@@ -31,39 +31,31 @@
 
 <div class="row">
     {{#each listaProdutos}}
-    <div class="col-md-4 mb-4"> <div class="card h-100 shadow-sm">
-            <div class="card-header bg-transparent border-success">
-                <span class="badge bg-success float-end">{{this.categoria}}</span>
-                <h5 class="card-title text-success mb-0">{{this.nome}}</h5>
-            </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
             
-            <img src="/uploads/{{this.imagem}}" class="card-img-top p-3" alt="{{this.nome}}" style="height: 200px; object-fit: contain;">   
+            <div class="card-header bg-success text-white text-center py-3">
+                <span class="badge bg-light text-success float-end rounded-pill">{{this.categoria}}</span>
+                <h5 class="card-title mb-0 fw-bold">{{this.nome}}</h5>
+            </div>
 
-            <div class="card-body">
+            <img src="/uploads/{{this.imagem}}" class="card-img-top p-3" alt="{{this.nome}}" style="height: 200px; object-fit: contain;">
+            
+            <div class="card-body text-center">
                 <h6 class="text-muted mb-2">Embalagem: {{this.peso}}</h6>
                 
-                <h4 class="text-dark">R$ {{this.preco}}</h4>
+                <h3 class="text-dark fw-bold">R$ {{this.preco}}</h3>
                 
                 <p class="card-text small text-secondary mt-3">
                     {{this.descricao_curta}}
                 </p>
             </div>
             
-           <div class="card-footer bg-transparent d-flex justify-content-between align-items-center py-3">
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
                 <div class="btn-group w-100 shadow-sm" role="group">
-        
-                    <a href="/produto/{{this.id}}" class="btn btn-outline-primary" title="Ver Detalhes">
-                        🔎
-                    </a>
-
-                    <a href="/admin/editar/{{this.id}}" class="btn btn-outline-warning text-dark" title="Editar">
-                        ✏️
-                    </a>
-                    
-                    <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza?')" class="btn btn-outline-danger" title="Excluir">
-                        🗑️
-                    </a>
-
+                    <a href="/produto/{{this.id}}" class="btn btn-outline-primary" title="Ver Detalhes">🔎</a>
+                    <a href="/admin/editar/{{this.id}}" class="btn btn-outline-warning text-dark" title="Editar">✏️</a>
+                    <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza?')" class="btn btn-outline-danger" title="Excluir">🗑️</a>
                 </div>
             </div>
         </div>

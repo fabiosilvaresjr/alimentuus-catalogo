@@ -9,18 +9,33 @@
     </head>
     <body class="bg-light">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-success mb-4 shadow">
-        <div class="container">
-            <img src="/uploads/logo-boi.png" alt="Logo" height="50" class="d-inline-block align-text-top me-2" style="filter: brightness(0) saturate(100%) invert(26%) sepia(93%) saturate(1874%) hue-rotate(96deg) brightness(96%) contrast(103%);">
-            <a class="navbar-brand fw-bold" href="/">Alimentuus Nutrição Animal</a>
-            
-            <div class="d-flex gap-2">
-                <a href="/" class="btn btn-outline-light btn-sm">📦 Produtos</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm py-3" style="border-bottom: 4px solid #8CC63F;">
+            <div class="container">
                 
-                <a href="/admin/cadastrar" class="btn btn-light btn-sm text-success fw-bold">+ Novo Produto</a>
+                <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+                    <img src="/uploads/logo-boi.png" alt="Logo" height="150" class="d-inline-block me-3">
+                    <span style="letter-spacing: 1px;">ALIMENTUUS NUTRICAO</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home / Estoque</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="d-flex">
+                        <a href="/admin/cadastrar" class="btn btn-outline-light fw-bold">
+                            + Novo Produto
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
         <div class="container">
             {{{body}}}
