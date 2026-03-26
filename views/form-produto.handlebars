@@ -1,0 +1,68 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Cadastrar Produto Alimentuus</h4>
+                </div>
+                
+                <div class="card-body">
+                    <form action="/produtos/novo" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="mb-3 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold">📸 Foto do Produto</label>
+                            <input type="file" name="imagem" class="form-control" accept="image/*" required>
+                            <div class="form-text">Formatos aceitos: JPG, PNG.</div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nome do Produto</label>
+                                <input type="text" class="form-control" name="nome" placeholder="Ex: Alimentuus Creep" required>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label">Categoria</label>
+                                <select class="form-select" name="categoria">
+                                    <option value="Racao">Ração / Creep</option>
+                                    <option value="Mineral">Mineral</option>
+                                    <option value="Proteinado">Proteinado</option>
+                                    <option value="Nucleo">Núcleo</option>
+                                    <option value="Equinos">Equinos</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label">Quantidade</label>
+                                <input type="text" class="form-control" name="quantidade" placeholder="Ex: 30 kg" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Preço Sugerido (R$)</label>
+                            <input type="number" class="form-control" name="preco" step="0.01" placeholder="0.00" required>
+                        </div>
+
+                       <div class="mb-3 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold text-success">📢 Descrição Curta (Marketing)</label>
+                            
+                            <textarea class="form-control" name="descricao_curta" rows="3" maxlength="350" required></textarea>
+                            
+                            <div class="form-text text-danger">Limite máximo de 350 caracteres para manter o catálogo alinhado.</div>
+                        </div>
+
+                        <div class="mb-3 bg-light p-3 rounded border border-success">
+                            <label class="form-label fw-bold text-success">📊 Imagem da Tabela de Garantia (Opcional)</label>
+                            <input type="file" name="imagem_garantia" class="form-control" accept="image/*">
+                            <div class="form-text">Faça o upload do print da tabela nutricional aqui.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 btn-lg mt-3">Salvar Produto</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
