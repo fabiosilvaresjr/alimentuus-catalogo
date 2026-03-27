@@ -56,20 +56,33 @@
                 </p>
             </div>
             
-            <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
+    <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
                 <div class="btn-group w-100 shadow-sm" role="group">
                     <a href="/produto/{{this.id}}" class="btn btn-outline-primary" title="Ver Detalhes">🔎</a>
                     <a href="/admin/editar/{{this.id}}" class="btn btn-outline-warning text-dark" title="Editar">✏️</a>
-                    <a href="/produtos/deletar/{{this.id}}" onclick="return confirm('Tem certeza?')" class="btn btn-outline-danger" title="Excluir">🗑️</a>
+                    <a href="#" onclick="deletarProduto({{this.id}})" class="btn btn-outline-danger" title="Excluir">🗑️</a>
                 </div>
             </div>
         </div>
-    </div>
-    {{else}}
+    </div> {{else}}
     <div class="col-12 text-center mt-5">
         <div class="alert alert-warning">
             Nenhum produto cadastrado ainda. <a href="/admin/cadastrar">Cadastre o primeiro!</a>
         </div>
     </div>
     {{/each}}
+
+    <script>
+        function deletarProduto(id) {
+            if (confirm('Tem certeza absoluta que deseja excluir este produto?')) {
+
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/produtos/deletar/' + id;
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </div>

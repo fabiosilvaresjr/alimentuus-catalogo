@@ -42,19 +42,22 @@ app.use(express.json())
 app.use(express.static('public'))
 
 // --- CONEXÃO COM O BANCO DE DADOS ---
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     host:     process.env.DB_HOST,
     user:     process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error('Erro ao conectar: ' + err.stack);
-        return;
+connection.getConnection((err, conn) => {
+    if (err) console.error('Erro no Pool de Conexão: ' + err.stack);
+    if (conn) {
+        console.log('Conectado no MySQL com sucesso via Pool!');
+        conn.release();
     }
-    console.log('Conectado no MySQL com sucesso!');
 });
 
 // Rota da Home (COM SISTEMA DE BUSCA/FILTRO E TYPESCRIPT)
@@ -192,7 +195,7 @@ app.get('/catalogo-detalhes', (req, res) => {
 });
 
 // Rota para DELETAR um produto
-app.get('/produtos/deletar/:id', (req, res) => {
+app.post('/produtos/deletar/:id', (req, res) => {
     const id = req.params.id
 
     const sql = 'DELETE FROM produtos WHERE id = ?'
