@@ -1,10 +1,24 @@
-require('dotenv').config()
-const express = require('express')
-const exphbs = require('express-handlebars')
-const app = express()
-const mysql = require('mysql2')
-const multer = require('multer')
-const path = require('path')
+import dotenv from 'dotenv';
+dotenv.config();
+import express, { Request, Response } from 'express';
+import { engine } from 'express-handlebars';
+import mysql from 'mysql2';
+import multer from 'multer';
+import path from 'path';
+
+const app = express();
+
+interface Produto {
+    id?: number;
+    nome: string;
+    categoria: string;
+    quantidade: string;
+    preco: number;
+    descricao_curta: string;
+    ficha_tecnica?: string;
+    imagem: string;
+    imagem_garantia?: string | null;
+}
 
 // nome do arquivo
 const storage = multer.diskStorage({
@@ -19,7 +33,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.engine('handlebars', exphbs.engine())
+app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 
 app.use(express.urlencoded({ extended: true })) 
@@ -33,42 +47,42 @@ const connection = mysql.createConnection({
     user:     process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
-})
+});
 
 connection.connect((err) => {
     if (err) {
-        console.error('Erro ao conectar: ' + err.stack)
-        return
+        console.error('Erro ao conectar: ' + err.stack);
+        return;
     }
-    console.log('Conectado no MySQL com sucesso!')
-})
+    console.log('Conectado no MySQL com sucesso!');
+});
 
-// Rota da Home (COM SISTEMA DE BUSCA/FILTRO)
+// Rota da Home (COM SISTEMA DE BUSCA/FILTRO E TYPESCRIPT)
 app.get('/', (req, res) => {
-    const pesquisa = req.query.busca
+    const pesquisa = req.query.busca as string; 
     
-    let sql = ''
-    let valores = []
+    let sql = `SELECT * FROM produtos`;
+    let valores: string[] = []; 
 
     if (pesquisa) {
-        sql = `SELECT * FROM produtos WHERE nome LIKE ? OR categoria LIKE ?`
-        valores = [`%${pesquisa}%`, `%${pesquisa}%`]
-    } else {
-        sql = 'SELECT * FROM produtos'
+        sql += ` WHERE nome LIKE ? OR categoria LIKE ?`;
+        valores = [`%${pesquisa}%`, `%${pesquisa}%`];
     }
 
-    connection.query(sql, valores, (err, results) => {
+    connection.query(sql, valores, (err, data) => {
         if (err) {
-            console.log(err)
-            return res.send('Erro ao buscar produtos!')
+            console.log(err);
+            return res.send('Erro ao buscar produtos!');
         }
         
-        res.render('home', { 
-            listaProdutos: results,
-            termoBusca: pesquisa 
-        })
-    })
-})
+        const produtos = data as Produto[];
+
+        res.render('home', {
+            produtos,
+            termoBusca: pesquisa || ''
+        });
+    });
+});
 
 app.get('/admin/cadastrar', (req, res) => {
     res.render('form-produto')
@@ -77,21 +91,25 @@ app.get('/admin/cadastrar', (req, res) => {
 // Rota para Cadastrar 
 app.post('/produtos/novo', upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'imagem_garantia', maxCount: 1 }]), (req, res) => {
     
+    // NOSSOS RADARES DE TESTE:
+    console.log("🚨 ALERTA: O botão salvar chegou no Backend!");
+    console.log("📦 DADOS RECEBIDOS DO HTML:", req.body);
+    
     const { nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica } = req.body;
     
     if (!nome || !categoria || !quantidade || !preco || !descricao_curta) {
-        return res.send('⚠️ Erro: Nome, Categoria, Peso, Preço e Descrição Curta são obrigatórios!');
+        return res.send('⚠️ Erro: Nome, Categoria, Quantidade, Preço e Descrição Curta são obrigatórios!');
     }
 
     if (!req.files || !req.files['imagem']) {
         return res.send('⚠️ Erro: A foto principal do produto é obrigatória!');
     }
 
-    const imagem = req.files['imagem'][0].filename;
-    const imagem_garantia = req.files['imagem_garantia'] ? req.files['imagem_garantia'][0].filename : null;
+    const imagem = (req.files as any)['imagem'][0].filename;
+    const imagem_garantia = (req.files as any)['imagem_garantia'] ? (req.files as any)['imagem_garantia'][0].filename : null;
 
     const sql = `INSERT INTO produtos (nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica, imagem, imagem_garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-    const valores = [nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica, imagem, imagem_garantia];
+    const valores = [nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica, imagem, imagem_garantia || null];
 
     connection.query(sql, valores, (err) => {
         if (err) {
