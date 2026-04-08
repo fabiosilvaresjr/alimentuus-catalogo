@@ -56,5 +56,5 @@ npm start
 Acesse: http://localhost:3000
 
 ---
-**Desenvolvido por Fabio Almeida** Estudante de Análise e Desenvolvimento de Sistemas | Focado na construção de sistemas escaláveis e soluções B2B.
+**Desenvolvido por Fabio Almeida** Desenvolvedor Backend com foco em soluções B2B e automação de processos.
 🔗 Conecte-se comigo no LinkedIn: https://www.linkedin.com/in/fabiosilvaresjr/
