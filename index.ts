@@ -20,6 +20,15 @@ interface Produto {
     imagem_garantia?: string | null;
 }
 
+interface ProdutoInput {
+    nome: string;
+    categoria: string;
+    quantidade: string;
+    preco: number;
+    descricao_curta: string;
+    ficha_tecnica?: string;
+}
+
 // nome do arquivo
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -60,7 +69,6 @@ connection.getConnection((err, conn) => {
     }
 });
 
-// Rota da Home (COM SISTEMA DE BUSCA/FILTRO E TYPESCRIPT)
 app.get('/', (req, res) => {
     const pesquisa = req.query.busca as string; 
     
@@ -72,13 +80,13 @@ app.get('/', (req, res) => {
         valores = [`%${pesquisa}%`, `%${pesquisa}%`];
     }
 
-    connection.query(sql, valores, (err, data) => {
+    connection.query(sql, valores, (err, data: Produto[]) => {
         if (err) {
             console.log(err);
             return res.send('Erro ao buscar produtos!');
         }
         
-        const produtos = data as Produto[];
+        const produtos = data;
 
         res.render('home', {
             produtos,
@@ -94,11 +102,8 @@ app.get('/admin/cadastrar', (req, res) => {
 // Rota para Cadastrar 
 app.post('/produtos/novo', upload.fields([{ name: 'imagem', maxCount: 1 }, { name: 'imagem_garantia', maxCount: 1 }]), (req, res) => {
     
-    // NOSSOS RADARES DE TESTE:
-    console.log("🚨 ALERTA: O botão salvar chegou no Backend!");
-    console.log("📦 DADOS RECEBIDOS DO HTML:", req.body);
-    
-    const { nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica } = req.body;
+    const body = req.body as ProdutoInput;
+    const { nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica } = body; 
     
     if (!nome || !categoria || !quantidade || !preco || !descricao_curta) {
         return res.send('⚠️ Erro: Nome, Categoria, Quantidade, Preço e Descrição Curta são obrigatórios!');
@@ -108,8 +113,9 @@ app.post('/produtos/novo', upload.fields([{ name: 'imagem', maxCount: 1 }, { nam
         return res.send('⚠️ Erro: A foto principal do produto é obrigatória!');
     }
 
-    const imagem = (req.files as any)['imagem'][0].filename;
-    const imagem_garantia = (req.files as any)['imagem_garantia'] ? (req.files as any)['imagem_garantia'][0].filename : null;
+    const files = req.files as { [fieldname: string]: Express.Multer.File[];};
+    const imagem = files.imagem[0].filename;
+    const imagem_garantia = files.imagem_garantia ? files.imagem_garantia[0].filename : null;
 
     const sql = `INSERT INTO produtos (nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica, imagem, imagem_garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     const valores = [nome, categoria, quantidade, preco, descricao_curta, ficha_tecnica, imagem, imagem_garantia || null];
@@ -129,7 +135,7 @@ app.get('/produto/:id', (req, res) => {
 
     const sql = 'SELECT * FROM produtos WHERE id = ?'
     
-    connection.query(sql, [id], (err, results) => {
+    connection.query(sql, [id], (err, results: Produto[]) => {
         if (err) {
             return res.send('Erro no banco de dados!')
         }
@@ -159,7 +165,7 @@ app.get('/catalogo-digital', (req, res) => {
         sql = 'SELECT * FROM produtos'
     }
 
-    connection.query(sql, valores, (err, results) => {
+    connection.query(sql, valores, (err, results: Produto[]) => {
         if (err) {
             return res.send('Erro ao gerar catálogo')
         }
@@ -184,7 +190,7 @@ app.get('/catalogo-detalhes', (req, res) => {
         sql = 'SELECT * FROM produtos';
     }
 
-    connection.query(sql, valores, (err, results) => {
+    connection.query(sql, valores, (err, results: Produto[]) => {
         if (err) return res.send('Erro ao gerar catálogo detalhado');
         
         res.render('catalogo-print-detalhes', { 
@@ -219,7 +225,7 @@ app.get('/admin/editar/:id', (req, res) => {
     // Busca o produto no banco para preencher os campos
     const sql = 'SELECT * FROM produtos WHERE id = ?'
 
-    connection.query(sql, [id], (err, results) => {
+    connection.query(sql, [id], (err, results: Produto []) => {
         if (err) return res.send("Erro ao buscar produto")
         
         const produto = results[0] // Pega o primeiro (e único) item
