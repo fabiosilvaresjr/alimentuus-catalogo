@@ -1,14 +1,18 @@
-# Dependências do Node (Pesado demais, não subir)
+# Dependências do Node (pesado demais, não subir)
 node_modules/
 
-# Logs de erro (Lixo)
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Arquivos de Sistema (Lixo de Mac/Windows)
+# Arquivos de sistema
 .DS_Store
 Thumbs.db
 
-# Variáveis de Ambiente para segurança
+# Variáveis de ambiente
 .env
+
+# Uploads de arquivos (dados gerados em runtime)
+public/uploads/*
+!public/uploads/.gitkeep
