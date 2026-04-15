@@ -147,7 +147,7 @@ app.get('/produto/:id', (req, res) => {
             return res.send('Produto não encontrado!')
         }
 
-        res.render('detalhes', { produto: produtoEncontrado })
+        res.render('detalhes', { produto: produtoEncontrado, layout: false })
     })
 })
 
